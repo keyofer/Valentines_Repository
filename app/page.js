@@ -49,7 +49,7 @@ const LOVE_LETTERS = [
     icon: "🤞",
     color: "blue.100",
     message:
-      "I promise to always be by your side, may you be poor or rich. May you not have money to buy us groceries in the future, wherever part of the world you want to go, visit or stay at. Just for the better or worse.",
+      "I promise to always be by your side, may you be poor or rich. May you not have money to buy us groceries in the future, wherever part of the world you want to go, visit or stay at. Be with you for the better or worse.",
   },
   {
     id: 5,
@@ -90,6 +90,10 @@ export default function ValentinePage() {
   const [selectedLetter, setSelectedLetter] = useState(null);
   const [noBtnPosition, setNoBtnPosition] = useState({ x: 100, y: 0 }); // Initial offset from center
   const [hoverCount, setHoverCount] = useState(0);
+  const [noLocked, setNoLocked] = useState(false);
+  const handleNoClick = () => {
+    setNoLocked(true);
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -159,6 +163,7 @@ export default function ValentinePage() {
             p="10"
             maxW="lg"
             textAlign="center"
+            margin="5"
           >
             <Card.Body>
               <Text fontSize="5xl" mb="4">
@@ -173,7 +178,6 @@ export default function ValentinePage() {
                   : "I've been thinking about you a lot..."}
               </Text>
 
-        
               <Flex
                 justify="center"
                 align="center"
@@ -191,27 +195,28 @@ export default function ValentinePage() {
                   YES!
                 </Button>
 
-                
                 <MotionButton
                   position="absolute"
-                  colorPalette="gray"
-                  variant="outline"
                   size="lg"
-                  onMouseEnter={moveNoButton}
-                  animate={{ x: noBtnPosition.x, y: noBtnPosition.y }}
+                  onMouseEnter={!noLocked ? moveNoButton : undefined}
+                  onClick={handleNoClick}
+                  animate={
+                    !noLocked
+                      ? { x: noBtnPosition.x, y: noBtnPosition.y }
+                      : { x: 120, y: 0 } // ← Right side of YES
+                  }
                   transition={{
                     type: "spring",
                     stiffness: 1200,
                     damping: 20,
                   }}
-                  style={{
-                    opacity: hoverCount > 25 ? 0 : 1,
-                    pointerEvents: hoverCount > 25 ? "none" : "auto",
-                  }}
+                  colorPalette={noLocked ? "red" : "gray"}
+                  variant={noLocked ? "solid" : "outline"}
+                  disabled={noLocked}
                   whiteSpace="nowrap"
                   zIndex={4}
                 >
-                  {currentNoPhrase}
+                  {noLocked ? "🔒 Locked" : currentNoPhrase}
                 </MotionButton>
               </Flex>
             </Card.Body>
