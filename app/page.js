@@ -174,8 +174,8 @@ export default function ValentinePage() {
               </Heading>
               <Text fontSize="lg" color="gray.700" mb="10">
                 {hoverCount > 0
-                  ? "You're persistent, I'll give you that! 😅"
-                  : "I've been thinking about you a lot..."}
+                  ? "Don't even think about clicking NO! 🙈"
+                  : " "}
               </Text>
 
               <Flex
